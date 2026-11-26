@@ -41,7 +41,7 @@ Android returned `Success`. `dumpsys package dexopt` then reported `status=speed
 
 **Important:** System-wide `wm density` is *not* app-specific. The tested ReVanced APK used an app-local Activity resource-density hook. Restoring the 170-DPI appearance requires the separately rebuilt, compatible APK; the performance command here does not recreate that patch.
 
-The custom build also suppressed a GmsCore battery-optimization *warning dialog* without changing system battery allowlists. This does **not** exempt GmsCore from battery controls.
+The [original, standalone Activity resource-density helper source](patches/DensityPatch.java) is published for reference. It is **not** a drop-in installable patch: integrating it requires a compatible, locally built application and preserving the correct final Activity/Application lifecycle method. The custom build also suppressed a GmsCore battery-optimization *warning dialog* without changing system battery allowlists. This does **not** exempt GmsCore from battery controls.
 
 ## Restoring to another watch
 
