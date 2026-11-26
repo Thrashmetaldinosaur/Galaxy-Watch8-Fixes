@@ -45,7 +45,7 @@ The custom build also suppressed a GmsCore battery-optimization *warning dialog*
 
 ## Restoring to another watch
 
-See [MIGRATION.md](MIGRATION.md) for what can be preserved, the correct installation sequence, and limitations of non-root backups.
+See [MIGRATION.md](MIGRATION.md) for what can be preserved, the correct installation sequence, and limitations of non-root backups. A [sanitized watch-friendly ReVanced preference template](revanced-settings-watch-template.json) is provided for reference. It is **not a verified export of the live device state**; personal SponsorBlock usage counters were removed. Some patch-version-specific keys may not import successfully.
 
 ## Privacy and provenance
 
