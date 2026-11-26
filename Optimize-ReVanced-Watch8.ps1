@@ -11,11 +11,11 @@ function Invoke-Adb([string[]]$ArgsList) {
   if ($LASTEXITCODE -ne 0) { throw "ADB command failed: $($ArgsList -join ' ')`n$($result -join [Environment]::NewLine)" }
   return $result
 }
-$state = Invoke-Adb @("get-state")
+$state = Invoke-Adb -ArgsList @("get-state")
 if (($state -join " ").Trim() -ne "device") { throw "ADB device not authorized or offline." }
-$battery = Invoke-Adb @("shell","dumpsys","battery")
+$battery = Invoke-Adb -ArgsList @("shell","dumpsys","battery")
 function Read-Property([string]$name) {
-  $line = @($battery | Where-Object { $_ -match "^\s*$name:\s*\d+" } | Select-Object -First 1)
+  $line = @($battery | Where-Object { $_ -match ("^\s*" + $name + ":\s*\d+") } | Select-Object -First 1)
   if (!$line) { throw "Unable to read battery $name." }
   return [int](([regex]::Match($line[0], "\d+")).Value)
 }
@@ -27,10 +27,10 @@ if ($level -lt $MinimumBatteryPercent -or $tempC -gt $MaximumBatteryTemperatureC
   throw "Optimization skipped: charge watch above $MinimumBatteryPercent% and cool below $MaximumBatteryTemperatureC C. Override thresholds only if appropriate."
 }
 Write-Host "Compiling only ReVanced primary DEX with speed-profile..."
-$compiled = Invoke-Adb @("shell","cmd","package","compile","-m","speed-profile","--primary-dex","app.revanced.android.youtube")
+$compiled = Invoke-Adb -ArgsList @("shell","cmd","package","compile","-m","speed-profile","--primary-dex","app.revanced.android.youtube")
 $compiled | ForEach-Object { Write-Host $_ }
 if (-not ($compiled -match "Success")) { throw "Compiler did not report Success." }
-$report = Invoke-Adb @("shell","dumpsys","package","dexopt")
+$report = Invoke-Adb -ArgsList @("shell","dumpsys","package","dexopt")
 $lines = $report -join "`n"
 $ix = $lines.IndexOf("[app.revanced.android.youtube]")
 if ($ix -lt 0) { throw "Missing package dexopt entry." }
